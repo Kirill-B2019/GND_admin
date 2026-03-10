@@ -1,0 +1,95 @@
+/* Bootstrap 5 + тёмная тема */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* Тёмный фон и тема (Bootstrap 5.3 data-bs-theme или кастомный фон) */
+[data-bs-theme="dark"] body,
+body.bg-dark-app,
+body.bg-dark {
+    background-color: #191919;
+    color: #dee2e6;
+}
+[data-bs-theme="dark"] .card,
+[data-bs-theme="dark"] .bg-white {
+    background-color: #2d3338;
+    border-color: #495057;
+}
+[data-bs-theme="dark"] .table {
+    --bs-table-bg: transparent;
+    --bs-table-color: #dee2e6;
+    --bs-table-border-color: #495057;
+}
+
+/* Адаптив: таблицы с горизонтальным скроллом на малых экранах */
+@media (max-width: 991.98px) {
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .table-responsive .table {
+        min-width: 600px;
+    }
+}
+
+/* Мобильные: контейнер без лишних отступов */
+@media (max-width: 575.98px) {
+    .app-main .container-fluid {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    .app-main .card-body,
+    .app-main .card-footer {
+        padding: 0.75rem;
+    }
+}
+
+/* --- Мобильная вёрстка (дублируем из layout для кэш-бастинга через Vite) --- */
+.app-sidebar { width: 260px; min-height: 100vh; flex-shrink: 0; }
+.app-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+@media (max-width: 991.98px) {
+    .app-sidebar { width: 0; overflow: hidden; }
+    .app-sidebar.offcanvas { width: 260px; }
+    .app-main { padding-top: 3.5rem; }
+}
+
+@media (max-width: 991.98px) {
+    #sidebarOffcanvas {
+        position: fixed; top: 0; left: 0; z-index: 1045; width: 280px; max-width: 85vw;
+        height: 100vh; visibility: hidden; transform: translateX(-100%); transition: transform .3s ease-in-out, visibility .3s;
+        overflow-x: hidden; overflow-y: auto; background: var(--bs-dark); border-right: 1px solid var(--bs-secondary);
+    }
+    #sidebarOffcanvas.show.offcanvas-mobile-open {
+        visibility: visible; transform: translateX(0);
+    }
+    #sidebarBackdrop {
+        position: fixed; top: 0; left: 0; z-index: 1040; width: 100%; height: 100%;
+        background: rgba(0,0,0,.5); opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s;
+    }
+    #sidebarBackdrop.show {
+        opacity: 1; visibility: visible;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .app-main { padding: 0.75rem; padding-top: 3.25rem; }
+    .btn-sm { min-height: 44px; padding: 0.5rem 0.75rem; }
+    .nav-link { min-height: 44px; display: flex; align-items: center; }
+}
+
+.table-mobile-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* Вкладки «Прочитать/Записать контракт» в тёмной карточке */
+.nav-tabs-dark.border-secondary { border-bottom-color: rgba(108, 117, 125, 0.5) !important; }
+.nav-tabs-dark .nav-link { color: rgba(255, 255, 255, 0.7); border-color: transparent; }
+.nav-tabs-dark .nav-link:hover { color: #fff; border-color: transparent; }
+.nav-tabs-dark .nav-link.active { color: #fff; background-color: rgba(255, 255, 255, 0.1); border-color: rgba(108, 117, 125, 0.5); border-bottom-color: transparent; }
+
+@supports (padding: env(safe-area-inset-top)) {
+    body { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+    .fixed-top { padding-left: max(0.5rem, env(safe-area-inset-left)); padding-right: max(0.5rem, env(safe-area-inset-right)); }
+    .app-main { padding-bottom: env(safe-area-inset-bottom); }
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
