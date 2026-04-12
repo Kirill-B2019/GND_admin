@@ -1,6 +1,6 @@
 # GND Admin
 
-**KB @CerbeRus - Nexus Invest Team**
+**KB @CerberRus00 - Nexus Invest Team**
 
 Админ-панель на Laravel с авторизацией (Laravel Breeze). Предназначена для управления данными GND (кошельки, API-ключи и т.д.) и интеграции с нодой GND по REST API.
 
