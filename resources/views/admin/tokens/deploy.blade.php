@@ -9,7 +9,17 @@
     <div class="py-4">
         <div class="container-fluid" style="max-width: 42rem;">
             @if (session('error'))
-                <div class="alert alert-danger">{{ session('error') }}</div>
+                @php
+                    $depErr = \App\Support\GndNodeError::parse(
+                        is_string(session('error')) ? session('error') : (string) session('error')
+                    );
+                @endphp
+                <x-admin.alert type="danger" title="Ошибка">
+                    <p class="mb-1">{{ $depErr['user_message'] }}</p>
+                    @if(!empty($depErr['hint']))
+                        <p class="small mb-0">{{ $depErr['hint'] }}</p>
+                    @endif
+                </x-admin.alert>
             @endif
             @if (session('status'))
                 <div class="alert alert-success">{{ session('status') }}</div>
@@ -41,7 +51,7 @@
             <div class="card bg-dark border-secondary">
                 <div class="card-header border-secondary text-light">Параметры токена</div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('admin.tokens.deploy.submit') }}">
+                    <form method="POST" action="{{ route('admin.tokens.deploy.submit') }}" data-loading-on-submit>
                         @csrf
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -102,7 +112,7 @@
                             @error('owner')<p class="text-danger small mt-1 mb-0">{{ $message }}</p>@enderror
                         </div>
                         <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary">Выпустить токен на ноде</button>
+                            <button type="submit" class="btn btn-primary" data-loading-label="Выпуск токена…">Выпустить токен на ноде</button>
                             <a href="{{ route('admin.tokens.index') }}" class="btn btn-outline-secondary">Отмена</a>
                         </div>
                     </form>

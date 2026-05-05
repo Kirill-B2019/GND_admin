@@ -1,13 +1,20 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <h2 class="h5 mb-0 text-light">Редактировать токен</h2>
-            <a href="{{ route('admin.tokens.show', $token) }}" class="btn btn-outline-secondary btn-sm">← К токену</a>
-        </div>
+        <x-admin.page-header title="Редактировать токен">
+            <x-slot name="actions">
+                <a href="{{ route('admin.tokens.show', $token) }}" class="btn btn-outline-secondary btn-sm">← К токену</a>
+            </x-slot>
+        </x-admin.page-header>
     </x-slot>
 
     <div class="py-4">
         <div class="container-fluid" style="max-width: 42rem;">
+            <x-admin.breadcrumbs :items="[
+                ['label' => 'Обзор', 'url' => route('admin.dashboard')],
+                ['label' => 'Токены', 'url' => route('admin.tokens.index')],
+                ['label' => $token->symbol ?? 'Токен', 'url' => route('admin.tokens.show', $token)],
+                ['label' => 'Редактирование'],
+            ]" />
             @if ($errors->any())
                 <div class="alert alert-danger">Исправьте ошибки в форме.</div>
             @endif

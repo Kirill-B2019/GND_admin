@@ -1,16 +1,20 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <h2 class="h5 mb-0 text-light">Информация о кошельке</h2>
-            <div class="d-flex gap-2">
+        <x-admin.page-header title="Информация о кошельке">
+            <x-slot name="actions">
                 <a href="{{ route('admin.wallets.index') }}" class="btn btn-outline-secondary btn-sm">← К списку</a>
                 <a href="{{ route('admin.wallets.edit', ['address' => $wallet->address]) }}" class="btn btn-outline-primary btn-sm">Имя/роль</a>
-            </div>
-        </div>
+            </x-slot>
+        </x-admin.page-header>
     </x-slot>
 
     <div class="py-4">
         <div class="container-fluid">
+            <x-admin.breadcrumbs :items="[
+                ['label' => 'Обзор', 'url' => route('admin.dashboard')],
+                ['label' => 'Кошельки', 'url' => route('admin.wallets.index')],
+                ['label' => \Illuminate\Support\Str::limit($wallet->address ?? 'Кошелёк', 24)],
+            ]" />
             {{-- Основные данные кошелька --}}
             <div class="card bg-dark border-secondary mb-4">
                 <div class="card-header border-secondary">

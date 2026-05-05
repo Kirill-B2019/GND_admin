@@ -1,8 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <h2 class="h5 mb-0 text-light">Аккаунт: {{ $account->name }}</h2>
-            <div class="d-flex gap-2">
+        <x-admin.page-header :title="'Аккаунт: ' . $account->name">
+            <x-slot name="actions">
                 <a href="{{ route('admin.accounts.index') }}" class="btn btn-outline-secondary btn-sm">← К списку</a>
                 <a href="{{ route('admin.accounts.edit', $account) }}" class="btn btn-outline-primary btn-sm">Изменить</a>
                 <form action="{{ route('admin.accounts.destroy', $account) }}" method="post" class="d-inline" data-confirm="Удалить аккаунт? Кошельки будут отвязаны.">
@@ -10,12 +9,17 @@
                     @method('DELETE')
                     <button type="submit" class="btn btn-outline-danger btn-sm">Удалить</button>
                 </form>
-            </div>
-        </div>
+            </x-slot>
+        </x-admin.page-header>
     </x-slot>
 
     <div class="py-4">
         <div class="container-fluid">
+            <x-admin.breadcrumbs :items="[
+                ['label' => 'Обзор', 'url' => route('admin.dashboard')],
+                ['label' => 'Аккаунты', 'url' => route('admin.accounts.index')],
+                ['label' => $account->name],
+            ]" />
             <div class="card bg-dark border-secondary mb-4">
                 <div class="card-header border-secondary">
                     <h3 class="h6 mb-0 text-light">Данные аккаунта</h3>

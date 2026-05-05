@@ -1,21 +1,40 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <h2 class="h5 mb-0 text-light">Ключи приложений</h2>
-            <div class="d-flex gap-2">
+        <x-admin.page-header title="Ключи приложений">
+            <x-slot name="actions">
                 <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary btn-sm">← Админ</a>
                 <a href="{{ route('admin.keys.create') }}" class="btn btn-primary btn-sm">Создать ключ</a>
-            </div>
-        </div>
+            </x-slot>
+        </x-admin.page-header>
     </x-slot>
 
     <div class="py-4">
         <div class="container-fluid">
+            <x-admin.breadcrumbs :items="[
+                ['label' => 'Обзор', 'url' => route('admin.dashboard')],
+                ['label' => 'Ключи приложений'],
+            ]" />
             @if (isset($gnd_error) && $gnd_error)
-                <div class="visually-hidden" data-flash="error">Ошибка ноды GND: {{ $gnd_error }}</div>
+                @php
+                    $gndParsed = \App\Support\GndNodeError::parse($gnd_error);
+                @endphp
+                <x-admin.alert type="danger" title="Ошибка ноды GND">
+                    <p class="mb-1">{{ $gndParsed['user_message'] }}</p>
+                    @if(!empty($gndParsed['hint']))
+                        <p class="small mb-2 mb-md-3">{{ $gndParsed['hint'] }}</p>
+                    @endif
+                    @if($gndParsed['raw'] !== '')
+                        <details class="small mb-0">
+                            <summary class="text-secondary">Технические детали</summary>
+                            <pre class="mt-2 mb-0 small text-break">{{ $gndParsed['raw'] }}</pre>
+                        </details>
+                    @endif
+                </x-admin.alert>
             @endif
             @if (isset($gnd_configured) && !$gnd_configured)
-                <div class="alert alert-warning">Задайте в .env переменные <code>GND_NODE_URL</code> и <code>GND_ADMIN_SECRET</code> для работы с ключами через ноду.</div>
+                <x-admin.alert type="warning" title="Нода не подключена">
+                    Задайте в .env переменные <code>GND_NODE_URL</code> и <code>GND_ADMIN_SECRET</code> для работы с ключами через ноду.
+                </x-admin.alert>
             @endif
             <div class="card bg-dark border-secondary">
                 <div class="table-responsive table-mobile-wrap">

@@ -1,14 +1,21 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <h2 class="h5 mb-0 text-light">Редактировать контракт</h2>
-            <a href="{{ route('admin.contracts.show', $contract) }}" class="btn btn-outline-secondary btn-sm">← К контракту</a>
-            <a href="{{ route('admin.contracts.index') }}" class="btn btn-outline-secondary btn-sm">К списку</a>
-        </div>
+        <x-admin.page-header title="Редактировать контракт">
+            <x-slot name="actions">
+                <a href="{{ route('admin.contracts.show', $contract) }}" class="btn btn-outline-secondary btn-sm">← К контракту</a>
+                <a href="{{ route('admin.contracts.index') }}" class="btn btn-outline-secondary btn-sm">К списку</a>
+            </x-slot>
+        </x-admin.page-header>
     </x-slot>
 
     <div class="py-4">
         <div class="container-fluid" style="max-width: 42rem;">
+            <x-admin.breadcrumbs :items="[
+                ['label' => 'Обзор', 'url' => route('admin.dashboard')],
+                ['label' => 'Контракты', 'url' => route('admin.contracts.index')],
+                ['label' => $contract->name, 'url' => route('admin.contracts.show', $contract)],
+                ['label' => 'Редактирование'],
+            ]" />
             <div class="card bg-dark border-secondary">
                 <div class="card-body">
                     <form method="POST" action="{{ route('admin.contracts.update', $contract) }}">

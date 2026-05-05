@@ -1,13 +1,19 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <h2 class="h5 mb-0 text-light">Роль пользователя: {{ $user->name }}</h2>
-            <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary btn-sm">← К списку</a>
-        </div>
+        <x-admin.page-header :title="'Роль пользователя: ' . $user->name">
+            <x-slot name="actions">
+                <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary btn-sm">← К списку</a>
+            </x-slot>
+        </x-admin.page-header>
     </x-slot>
 
     <div class="py-4">
         <div class="container-fluid" style="max-width: 32rem;">
+            <x-admin.breadcrumbs :items="[
+                ['label' => 'Обзор', 'url' => route('admin.dashboard')],
+                ['label' => 'Пользователи', 'url' => route('admin.users.index')],
+                ['label' => $user->name],
+            ]" />
             <div class="card bg-dark border-secondary">
                 <div class="card-body">
                     <p class="text-secondary small mb-4">{{ $user->email }}</p>

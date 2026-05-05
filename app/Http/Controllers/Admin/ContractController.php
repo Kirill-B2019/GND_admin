@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ContractDeployRequest;
 use App\Helpers\FormatHelper;
 use App\Models\Contract;
 use App\Services\GndAdminApi;
@@ -691,14 +692,8 @@ class ContractController extends Controller
         return redirect()->route('admin.contracts.show', $contract)->with('status', 'Анализ безопасности выполнен. Найдено замечаний: ' . count($issues));
     }
 
-    public function deploy(Request $request, Contract $contract): RedirectResponse
+    public function deploy(ContractDeployRequest $request, Contract $contract): RedirectResponse
     {
-        $request->validate([
-            'deployer_address' => 'required|string|max:255',
-            'constructor_params' => 'nullable|array',
-            'constructor_params.*' => 'nullable|string',
-            'constructor_params_json' => 'nullable|string',
-        ]);
         $bytecode = $contract->bytecode_hex;
         $abiJson = $contract->abi_json;
         // Если ABI нет, но есть исходный код — компилируем, чтобы при деплое отправить ABI на ноду (иначе в gnd_db.contracts.abi будет NULL)

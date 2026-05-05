@@ -1,8 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="h5 mb-0 text-light">
-            Обзор админ-панели
-        </h2>
+        <x-admin.page-header title="Обзор админ-панели" />
     </x-slot>
 
     <div class="py-4">

@@ -1,11 +1,26 @@
 /* Bootstrap 5 + тёмная тема */
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
+/*
+ * Tailwind (ниже @tailwind) используется для legacy-компонентов Breeze/Jetstream:
+ * modal, dropdown, welcome — не удалять без перевода этих шаблонов на Bootstrap.
+ * Основной UI админки — Bootstrap 5.
+ */
+
+/* Токены темы админки */
+[data-bs-theme="dark"] {
+    --admin-bg-page: #191919;
+    --admin-bg-card: #2d3338;
+    --admin-border: #495057;
+    --admin-link: #6ea8fe;
+    --admin-text-muted: #adb5bd;
+}
+
 /* Тёмный фон и тема (Bootstrap 5.3 data-bs-theme или кастомный фон) */
 [data-bs-theme="dark"] body,
 body.bg-dark-app,
 body.bg-dark {
-    background-color: #191919;
+    background-color: var(--admin-bg-page, #191919);
     color: #dee2e6;
 }
 [data-bs-theme="dark"] .card,
@@ -77,6 +92,35 @@ body.bg-dark {
 }
 
 .table-mobile-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* Хлебные крошки на тёмном фоне */
+[data-bs-theme="dark"] .breadcrumb-item + .breadcrumb-item::before {
+    color: var(--admin-text-muted, #adb5bd);
+}
+[data-bs-theme="dark"] .breadcrumb-item a {
+    color: var(--admin-link, #6ea8fe);
+}
+[data-bs-theme="dark"] .breadcrumb-item.active {
+    color: #dee2e6;
+}
+
+/* Плейсхолдер загрузки (для будущих async-блоков и тестов визуала) */
+@keyframes admin-skeleton-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+.admin-skeleton-bar {
+    height: 1rem;
+    border-radius: 0.25rem;
+    background: linear-gradient(
+        90deg,
+        #3a4149 0%,
+        #4d565f 50%,
+        #3a4149 100%
+    );
+    background-size: 200% 100%;
+    animation: admin-skeleton-shimmer 1.4s ease-in-out infinite;
+}
 
 /* Вкладки «Прочитать/Записать контракт» в тёмной карточке */
 .nav-tabs-dark.border-secondary { border-bottom-color: rgba(108, 117, 125, 0.5) !important; }

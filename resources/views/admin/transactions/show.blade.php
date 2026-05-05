@@ -1,13 +1,19 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <h2 class="h5 mb-0 text-light">Транзакция #{{ $transaction->id }}</h2>
-            <a href="{{ route('admin.transactions.index') }}" class="btn btn-outline-secondary btn-sm">← К списку</a>
-        </div>
+        <x-admin.page-header :title="'Транзакция #' . $transaction->id">
+            <x-slot name="actions">
+                <a href="{{ route('admin.transactions.index') }}" class="btn btn-outline-secondary btn-sm">← К списку</a>
+            </x-slot>
+        </x-admin.page-header>
     </x-slot>
 
     <div class="py-4">
         <div class="container-fluid" style="max-width: 40rem;">
+            <x-admin.breadcrumbs :items="[
+                ['label' => 'Обзор', 'url' => route('admin.dashboard')],
+                ['label' => 'Транзакции', 'url' => route('admin.transactions.index')],
+                ['label' => '#' . $transaction->id],
+            ]" />
             <div class="card bg-dark border-secondary">
                 <div class="card-header border-secondary text-light">Детали перевода</div>
                 <div class="card-body">
